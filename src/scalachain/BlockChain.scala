@@ -1,17 +1,15 @@
 package scalachain
 
 import methods.{calculateHash, mineBlock}
-
 import scala.collection.mutable.ListBuffer
 
-class BlockChain(val difficulty: Int) {
-  var blocks = new ListBuffer[Block]
+class BlockChain[Data](val difficulty: Int) {
+  var blocks = new ListBuffer[Block[Data]]
 
-  def newBlock(data: String): Block = {
+  def newBlock(data: Data): Block[Data] = {
     val index = blocks.size
-    val block = new Block()
+    val block = new Block[Data](data)
     block.index = index
-    block.data = data
     block.previousHash = if (blocks.isEmpty) "" else blocks.last.hash
     block.timestamp = System.currentTimeMillis()
     block.hash = calculateHash(block)
@@ -20,7 +18,7 @@ class BlockChain(val difficulty: Int) {
   }
 
 
-  def addBlock(block: Block): Unit = {
+  def addBlock(block: Block[Data]): Unit = {
     mineBlock(block, difficulty)
     blocks += block
   }
@@ -43,7 +41,7 @@ class BlockChain(val difficulty: Int) {
     true
   }
 
-  def isValidNewBlock(newBlock: Block, previousBlock: Block): Boolean = {
+  def isValidNewBlock(newBlock: Block[Data], previousBlock: Block[Data]): Boolean = {
     if (previousBlock.index != newBlock.index)
       return false
 

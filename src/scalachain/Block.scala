@@ -1,10 +1,9 @@
 package scalachain
 
-class Block {
+class Block[Object](var data: Object) {
   var index = 0
   var timestamp = 0L
   var hash = ""
   var previousHash = ""
-  var data = ""
   var nonce = 0
 }

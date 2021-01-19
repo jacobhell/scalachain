@@ -3,11 +3,11 @@ package scalachain
 import java.security.MessageDigest
 
 object methods {
-  def calculateHash(block: Block): String = {
+  def calculateHash(block: Block[_]): String = {
     val index = block.index
     val timestamp = block.timestamp
     val previousHash = block.previousHash
-    val data = block.data
+    val data = block.data.toString
     val nonce = block.nonce
     val str = s"$index$timestamp$previousHash$data$nonce"
 
@@ -23,11 +23,11 @@ object methods {
     stringBuilder.toString()
   }
 
-  def mineBlock(block: Block, difficulty: Int): Unit = {
+  def mineBlock(block: Block[_], difficulty: Int): Unit = {
     mineBlock(block, difficulty, 0)
   }
 
-  def mineBlock(block: Block, difficulty: Int, nonce: Int): Unit = {
+  def mineBlock(block: Block[_], difficulty: Int, nonce: Int): Unit = {
     val subString = block.hash.substring(0, difficulty)
     val zeros = createZeros(difficulty)
 
